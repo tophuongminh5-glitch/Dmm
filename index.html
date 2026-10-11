@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>FPS Unlocker Pro</title>
+    <style>
+        :root {
+            --primary: #00ff66;
+            --bg-dark: #0a0f0d;
+            --panel-bg: #111a16;
+            --text-gray: #889988;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            overflow: hidden;
+        }
+
+        body {
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            background: var(--panel-bg);
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 0 20px rgba(0, 255, 102, 0.2);
+            box-sizing: border-box;
+        }
+
+        h2 {
+            color: var(--primary);
+            text-align: center;
+            margin-top: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 255, 102, 0.5);
+            font-size: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-gray);
+            font-size: 13px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            background: #050806;
+            border: 1px solid #224422;
+            color: #fff;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 8px rgba(0, 255, 102, 0.3);
+        }
+
+        .btn-run {
+            width: 100%;
+            padding: 14px;
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            text-transform: uppercase;
+            margin-top: 10px;
+            transition: all 0.2s;
+        }
+
+        .btn-run:hover {
+            background: var(--primary);
+            color: #000;
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        .terminal {
+            margin-top: 20px;
+            background: #000;
+            border: 1px solid #223322;
+            height: 220px;
+            border-radius: 4px;
+            padding: 12px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 11px;
+            color: var(--primary);
+            overflow-y: auto;
+            white-space: pre-wrap;
+            display: none;
+        }
+
+        .terminal span {
+            display: block;
+            line-height: 1.4;
+        }
+
+        .success-msg {
+            display: none;
+            margin-top: 15px;
+            background: rgba(0, 255, 102, 0.1);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 4px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>FPS UNLOCKER BYPASS</h2>
+    
+    <div class="form-group">
+        <label for="fpsSelect">CHỌN MỨC FPS:</label>
+        <select id="fpsSelect">
+            <option value="90">90 FPS</option>
+            <option value="120">120 FPS</option>
+            <option value="144">144 FPS</option>
+            <option value="240">240 FPS</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="serialInput">NHẬP SERIAL MÁY:</label>
+        <input type="text" id="serialInput" placeholder="Ví dụ: SN-9X82-LL/A" required>
+    </div>
+
+    <div class="form-group">
+        <label for="idInput">NHẬP MÃ MÁY (DEVICE ID):</label>
+        <input type="text" id="idInput" placeholder="Ví dụ: DESKTOP-78F9G2" required>
+    </div>
+
+    <button class="btn-run" id="runBtn" onclick="startBypass()">KÍCH HOẠT RUN</button>
+
+    <div class="terminal" id="terminalLog"></div>
+
+    <div class="success-msg" id="successBox">
+        ✓ UNLOCKED SUCCESSFUL! RESTART GAME NOW.
+    </div>
+</div>
+
+<script>
+function startBypass() {
+    const fps = document.getElementById('fpsSelect').value;
+    const serial = document.getElementById('serialInput').value.trim();
+    const deviceId = document.getElementById('idInput').value.trim();
+    
+    if(!serial || !deviceId) {
+        alert('Vui lòng nhập đầy đủ Serial và Mã máy!');
+        return;
+    }
+
+    const runBtn = document.getElementById('runBtn');
+    const terminal = document.getElementById('terminalLog');
+    const successBox = document.getElementById('successBox');
+
+    runBtn.disabled = true;
+    runBtn.innerText = "BYPASSING...";
+    successBox.style.display = "none";
+    terminal.style.display = "block";
+    terminal.innerHTML = "";
+
+    const hexChars = "0123456789ABCDEF";
+    const modules = ["MEMORY", "KERNEL", "GPU_INJECT", "BYPASS", "ANTI_CHEAT", "PATCH", "REGISTRY"];
+    
+    let lineCount = 0;
+    const maxLines = 150; // Chạy dài 150 dòng code liên tục
+
+    const interval = setInterval(() => {
+        if (lineCount < maxLines) {
+            let logText = "";
+            
+            if (lineCount === 10) logText = `[SYSTEM] Kết nối nhân Kernel thành công...`;
+            else if (lineCount === 35) logText = `[DEVICE] Đang nạp cấu hình ID: ${deviceId}...`;
+            else if (lineCount === 65) logText = `[SECURITY] Vô hiệu hóa lớp bảo mật bộ nhớ...`;
+            else if (lineCount === 100) logText = `[PATCH] Ghi đè giới hạn phần cứng khóa: ${fps} FPS...`;
+            else if (lineCount === 130) logText = `[CLEAN] Xóa lịch sử cache chống gian lận...`;
+            else {
+                let randomHex = "";
+                for(let i=0; i<8; i++) randomHex += hexChars[Math.floor(Math.random()*16)];
+                let randomAddr = "0x" + randomHex.substring(0,4);
+                let randomModule = modules[Math.floor(Math.random()*modules.length)];
+                logText = `[${randomModule}] [${randomAddr}] => INJECT_CODE_DATA_${randomHex} (STATUS_OK) [Target: ${fps}FPS]`;
+            }
+
+            const span = document.createElement("span");
+            span.textContent = logText;
+            terminal.appendChild(span);
+            terminal.scrollTop = terminal.scrollHeight;
+            lineCount++;
+        } else {
+            clearInterval(interval);
+            
+            const endSpan = document.createElement("span");
+            endSpan.style.color = "#ffffff";
+            endSpan.style.fontWeight = "bold";
+            endSpan.textContent = `\n[+] THÀNH CÔNG: Đã áp dụng gói cấu hình bẻ khóa FPS.`;
+            terminal.appendChild(endSpan);
+            terminal.scrollTop = terminal.scrollHeight;
+
+            successBox.innerHTML = `✓ UNLOCKED ${fps} FPS SUCCESSFUL!<br>Thiết bị [${deviceId}] đã mở khóa hoàn tất.`;
+            successBox.style.display = "block";
+            
+            runBtn.disabled = false;
+            runBtn.innerText = "KÍCH HOẠT RUN";
+        }
+    }, 10); // Tốc độ 10ms siêu nhanh chớp nhoáng
+}
+</script>
+
+</body>
+</html>
